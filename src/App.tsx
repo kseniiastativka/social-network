@@ -11,7 +11,10 @@ import Settings from "./components/Settings/Settings";
 
 const App = (props: {
   state: {
-    profilePage: { posts: { message: string; likesCount: number }[] };
+    profilePage: {
+      posts: { message: string; likesCount: number }[];
+      newPostText: string;
+    };
     dialogsPage: {
       dialogs: { id: number; name: string; img: string }[];
       messages: { id: number; message: string }[];
@@ -20,7 +23,8 @@ const App = (props: {
       friends: { id: number; name: string; img: string }[];
     };
   };
-  addPosts: (post: string) => void;
+  addPosts: () => void;
+  updateNewPostText: (updatedText: string) => void;
 }) => {
   return (
     <div className="app-wrapper">
@@ -35,8 +39,9 @@ const App = (props: {
           path="/profile"
           render={() => (
             <Profile
-              state={props.state.profilePage}
+              profilePage={props.state.profilePage}
               addPosts={props.addPosts}
+              updateNewPostText={props.updateNewPostText}
             />
           )}
         />
