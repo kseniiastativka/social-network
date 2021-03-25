@@ -2,7 +2,12 @@ import ReactDOM from "react-dom";
 import React from "react";
 import { BrowserRouter } from "react-router-dom";
 import App from "./App";
-import { addPost, updateNewPostText } from "./redux/state";
+import {
+  addPost,
+  sendMessage,
+  updateNewMessageText,
+  updateNewPostText,
+} from "./redux/state";
 
 export let rerenderEntireTree = (state: {
   profilePage: {
@@ -12,6 +17,7 @@ export let rerenderEntireTree = (state: {
   dialogsPage: {
     dialogs: { id: number; name: string; img: string }[];
     messages: { id: number; message: string }[];
+    newMessageText: string;
   };
   navbar: {
     friends: { id: number; name: string; img: string }[];
@@ -24,6 +30,8 @@ export let rerenderEntireTree = (state: {
           state={state}
           addPosts={addPost}
           updateNewPostText={updateNewPostText}
+          updateNewMessageText={updateNewMessageText}
+          sendMessage={sendMessage}
         />
       </BrowserRouter>
     </React.StrictMode>,

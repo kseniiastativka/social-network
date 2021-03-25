@@ -18,6 +18,7 @@ const App = (props: {
     dialogsPage: {
       dialogs: { id: number; name: string; img: string }[];
       messages: { id: number; message: string }[];
+      newMessageText: string;
     };
     navbar: {
       friends: { id: number; name: string; img: string }[];
@@ -25,6 +26,9 @@ const App = (props: {
   };
   addPosts: () => void;
   updateNewPostText: (updatedText: string) => void;
+
+  sendMessage: () => void;
+  updateNewMessageText: (updatedMessage: string) => void;
 }) => {
   return (
     <div className="app-wrapper">
@@ -33,7 +37,13 @@ const App = (props: {
       <div className="app-wrapper-content">
         <Route
           path="/dialogs"
-          render={() => <Dialogs state={props.state.dialogsPage} />}
+          render={() => (
+            <Dialogs
+              state={props.state.dialogsPage}
+              sendMessage={props.sendMessage}
+              updateNewMessageText={props.updateNewMessageText}
+            />
+          )}
         />
         <Route
           path="/profile"

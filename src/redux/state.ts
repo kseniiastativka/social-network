@@ -50,6 +50,7 @@ let state = {
           "https://internationaltreefoundation.org/wp-content/uploads/2016/05/tree-576848_1280.png",
       },
     ],
+    newMessageText: "",
   },
   navbar: {
     friends: [
@@ -88,6 +89,21 @@ export let addPost = () => {
 
 export let updateNewPostText = (newText: string) => {
   state.profilePage.newPostText = newText;
+  rerenderEntireTree(state);
+};
+
+export let sendMessage = () => {
+  let newMessage = {
+    id: 4,
+    message: state.dialogsPage.newMessageText,
+  };
+  state.dialogsPage.messages.push(newMessage);
+  state.dialogsPage.newMessageText = "";
+  rerenderEntireTree(state);
+};
+
+export let updateNewMessageText = (newMessage: string) => {
+  state.dialogsPage.newMessageText = newMessage;
   rerenderEntireTree(state);
 };
 
