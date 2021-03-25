@@ -20,6 +20,7 @@ const App = (props: {
       friends: { id: number; name: string; img: string }[];
     };
   };
+  addPosts: (post: string) => void;
 }) => {
   return (
     <div className="app-wrapper">
@@ -32,7 +33,12 @@ const App = (props: {
         />
         <Route
           path="/profile"
-          render={() => <Profile state={props.state.profilePage} />}
+          render={() => (
+            <Profile
+              state={props.state.profilePage}
+              addPosts={props.addPosts}
+            />
+          )}
         />
         <Route path="/news" render={() => <News />} />
         <Route path="/music" render={() => <Music />} />

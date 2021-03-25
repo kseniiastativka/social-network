@@ -6,11 +6,12 @@ const Profile = (props: {
   state: {
     posts: { message: string; likesCount: number }[];
   };
+  addPosts: (post: string) => void;
 }) => {
   return (
     <>
       <ProfileInfo />
-      <MyPosts posts={props.state.posts} />
+      <MyPosts posts={props.state.posts} addPosts={props.addPosts} />
     </>
   );
 };
