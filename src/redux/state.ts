@@ -73,6 +73,16 @@ const state = {
     ],
   },
 };
+export const addPostActionCreator = () => ({ type: "ADD-POST" } as const);
+export const updateNewPostActionCreator = (text: string) =>
+  ({
+    type: "UPDATE-NEW-POST",
+    text: text,
+  } as const);
+export const sendMessageActionCreator = () =>
+  ({ type: "SEND-MESSAGE" } as const);
+export const updateNewMessageTextActionCreator = (message: string) =>
+  ({ type: "UPDATE-NEW-MESSAGE-TEXT", text: message } as const);
 
 export type Action =
   | { type: "ADD-POST" }
