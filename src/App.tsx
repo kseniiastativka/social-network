@@ -8,16 +8,9 @@ import { Route } from "react-router-dom";
 import News from "./components/News/News";
 import Music from "./components/Music/Music";
 import Settings from "./components/Settings/Settings";
-import { State } from "./redux/state";
+import { Action, State } from "./redux/state";
 
-const App = (props: {
-  state: State;
-  addPosts: () => void;
-  updateNewPostText: (updatedText: string) => void;
-
-  sendMessage: () => void;
-  updateNewMessageText: (updatedMessage: string) => void;
-}) => {
+const App = (props: { state: State; dispatch: (action: Action) => void }) => {
   return (
     <div className="app-wrapper">
       <Header />
@@ -28,8 +21,7 @@ const App = (props: {
           render={() => (
             <Dialogs
               state={props.state.dialogsPage}
-              sendMessage={props.sendMessage}
-              updateNewMessageText={props.updateNewMessageText}
+              dispatch={props.dispatch}
             />
           )}
         />
@@ -38,8 +30,7 @@ const App = (props: {
           render={() => (
             <Profile
               profilePage={props.state.profilePage}
-              addPosts={props.addPosts}
-              updateNewPostText={props.updateNewPostText}
+              dispatch={props.dispatch}
             />
           )}
         />

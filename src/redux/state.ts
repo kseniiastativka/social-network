@@ -74,37 +74,44 @@ const state = {
   },
 };
 
+export type Action =
+  | { type: "ADD-POST" }
+  | { type: "UPDATE-NEW-POST"; text: string }
+  | { type: "SEND-MESSAGE" }
+  | { type: "UPDATE-NEW-MESSAGE-TEXT"; text: string };
+
 let store = {
   rerenderEntireTree: (state: State) => {},
 
+  dispatch(action: Action) {
+    if (action.type === "ADD-POST") {
+      let newPost = {
+        id: 5,
+        message: state.profilePage.newPostText,
+        likesCount: 0,
+      };
+      state.profilePage.posts.push(newPost);
+      state.profilePage.newPostText = "";
+      store.rerenderEntireTree(state);
+    } else if (action.type === "UPDATE-NEW-POST") {
+      state.profilePage.newPostText = action.text;
+      store.rerenderEntireTree(state);
+    } else if (action.type === "SEND-MESSAGE") {
+      let newMessage = {
+        id: 4,
+        message: state.dialogsPage.newMessageText,
+      };
+      state.dialogsPage.messages.push(newMessage);
+      state.dialogsPage.newMessageText = "";
+      store.rerenderEntireTree(state);
+    } else if (action.type === "UPDATE-NEW-MESSAGE-TEXT") {
+      state.dialogsPage.newMessageText = action.text;
+      store.rerenderEntireTree(state);
+    }
+  },
+
   getState() {
     return state;
-  },
-
-  addPost() {
-    let newPost = {
-      id: 5,
-      message: state.profilePage.newPostText,
-      likesCount: 0,
-    };
-    state.profilePage.posts.push(newPost);
-    state.profilePage.newPostText = "";
-    store.rerenderEntireTree(state);
-  },
-
-  updateNewPostText(newText: string) {
-    state.profilePage.newPostText = newText;
-    store.rerenderEntireTree(state);
-  },
-
-  sendMessage() {
-    let newMessage = {
-      id: 4,
-      message: state.dialogsPage.newMessageText,
-    };
-    state.dialogsPage.messages.push(newMessage);
-    state.dialogsPage.newMessageText = "";
-    store.rerenderEntireTree(state);
   },
 
   updateNewMessageText(newMessage: string) {
