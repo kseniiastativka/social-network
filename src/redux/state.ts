@@ -1,3 +1,7 @@
+import { profileReducer } from "./profile-reducer";
+import { dialogsReducer } from "./dialogs-reducer";
+import { navbarReducer } from "./navbar-reducer";
+
 const state = {
   profilePage: {
     posts: [
@@ -73,16 +77,6 @@ const state = {
     ],
   },
 };
-export const addPostActionCreator = () => ({ type: "ADD-POST" } as const);
-export const updateNewPostActionCreator = (text: string) =>
-  ({
-    type: "UPDATE-NEW-POST",
-    text: text,
-  } as const);
-export const sendMessageActionCreator = () =>
-  ({ type: "SEND-MESSAGE" } as const);
-export const updateNewMessageTextActionCreator = (message: string) =>
-  ({ type: "UPDATE-NEW-MESSAGE-TEXT", text: message } as const);
 
 export type Action =
   | { type: "ADD-POST" }
@@ -94,39 +88,14 @@ let store = {
   rerenderEntireTree: (state: State) => {},
 
   dispatch(action: Action) {
-    if (action.type === "ADD-POST") {
-      let newPost = {
-        id: 5,
-        message: state.profilePage.newPostText,
-        likesCount: 0,
-      };
-      state.profilePage.posts.push(newPost);
-      state.profilePage.newPostText = "";
-      store.rerenderEntireTree(state);
-    } else if (action.type === "UPDATE-NEW-POST") {
-      state.profilePage.newPostText = action.text;
-      store.rerenderEntireTree(state);
-    } else if (action.type === "SEND-MESSAGE") {
-      let newMessage = {
-        id: 4,
-        message: state.dialogsPage.newMessageText,
-      };
-      state.dialogsPage.messages.push(newMessage);
-      state.dialogsPage.newMessageText = "";
-      store.rerenderEntireTree(state);
-    } else if (action.type === "UPDATE-NEW-MESSAGE-TEXT") {
-      state.dialogsPage.newMessageText = action.text;
-      store.rerenderEntireTree(state);
-    }
+    state.profilePage = profileReducer(state.profilePage, action);
+    state.dialogsPage = dialogsReducer(state.dialogsPage, action);
+    state.navbar = navbarReducer(state.navbar, action);
+    store.rerenderEntireTree(state);
   },
 
   getState() {
     return state;
-  },
-
-  updateNewMessageText(newMessage: string) {
-    state.dialogsPage.newMessageText = newMessage;
-    store.rerenderEntireTree(state);
   },
 
   subscribe(observer: (state: State) => unknown) {
