@@ -1,7 +1,7 @@
 import s from "./Dialogs.module.css";
 import DialogItem from "./DialogItem/DialogItem";
 import Message from "./Message/Message";
-import React from "react";
+import React, { ChangeEvent } from "react";
 import {
   Action,
   sendMessageActionCreator,
@@ -24,14 +24,12 @@ const Dialogs = (props: {
     <Message message={message.message} />
   ));
 
-  let addMessageElement = React.createRef<any>();
-
   let sendMessage = () => {
     props.dispatch(sendMessageActionCreator());
   };
 
-  let onMessageUpdate = () => {
-    let message = addMessageElement.current.value;
+  let onMessageUpdate = (e: ChangeEvent<HTMLTextAreaElement>) => {
+    let message = e.target.value;
     props.dispatch(updateNewMessageTextActionCreator(message));
   };
 
@@ -41,7 +39,6 @@ const Dialogs = (props: {
       <div className={s.messages}>
         {messageElements}
         <textarea
-          ref={addMessageElement}
           onChange={onMessageUpdate}
           value={props.state.newMessageText}
         />
