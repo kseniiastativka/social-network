@@ -95,7 +95,7 @@ let store = {
   },
 
   getState() {
-    return state;
+    return store;
   },
 
   subscribe(observer: (state: State) => unknown) {

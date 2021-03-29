@@ -1,7 +1,7 @@
 import React from "react";
 import MyPosts from "./MyPosts/MyPosts";
 import ProfileInfo from "./ProfileInfo/ProfileInfo";
-import { Action } from "../../redux/state";
+import { Action } from "../../redux/store";
 
 const Profile = (props: {
   profilePage: {
