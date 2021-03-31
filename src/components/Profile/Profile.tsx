@@ -1,23 +1,14 @@
 import React from "react";
-import MyPosts from "./MyPosts/MyPosts";
 import ProfileInfo from "./ProfileInfo/ProfileInfo";
 import { Action } from "../../redux/store";
+import MyPostsContainer from "./MyPosts/MyPostsContainer";
+import { Store } from "../../redux/redux-store";
 
-const Profile = (props: {
-  profilePage: {
-    posts: { message: string; likesCount: number }[];
-    newPostText: string;
-  };
-  dispatch: (action: Action) => void;
-}) => {
+const Profile = (props: { store: Store }) => {
   return (
     <>
       <ProfileInfo />
-      <MyPosts
-        posts={props.profilePage.posts}
-        newPostText={props.profilePage.newPostText}
-        dispatch={props.dispatch}
-      />
+      <MyPostsContainer store={props.store} />
     </>
   );
 };
