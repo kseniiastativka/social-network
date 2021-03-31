@@ -2,10 +2,9 @@ import React from "react";
 import { NavLink } from "react-router-dom";
 import s from "./Navbar.module.css";
 import Friends from "./Friend/Friends";
+import { State } from "../../redux/redux-store";
 
-const Navbar = (props: {
-  state: { friends: { id: number; name: string; img: string }[] };
-}) => {
+const Navbar = (props: { navbarPage: State["navbar"] }) => {
   return (
     <div className={s.nav}>
       <nav>
@@ -38,7 +37,7 @@ const Navbar = (props: {
 
       <div>
         <h3>Friends</h3>
-        <Friends friends={props.state.friends} />
+        <Friends friends={props.navbarPage.friends} />
       </div>
     </div>
   );

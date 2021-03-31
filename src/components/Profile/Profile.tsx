@@ -4,11 +4,11 @@ import { Action } from "../../redux/store";
 import MyPostsContainer from "./MyPosts/MyPostsContainer";
 import { Store } from "../../redux/redux-store";
 
-const Profile = (props: { store: Store }) => {
+const Profile = () => {
   return (
     <>
       <ProfileInfo />
-      <MyPostsContainer store={props.store} />
+      <MyPostsContainer />
     </>
   );
 };
