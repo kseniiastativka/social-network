@@ -1,4 +1,4 @@
-import { Action, State } from "./store";
+import { Action, DialogsPage, State } from "./redux-store";
 
 let initialState = {
   messages: [
@@ -45,7 +45,7 @@ let initialState = {
 };
 
 export const dialogsReducer = (
-  state: State["dialogsPage"] = initialState,
+  state: DialogsPage = initialState,
   action: Action
 ) => {
   switch (action.type) {

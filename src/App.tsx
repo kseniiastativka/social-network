@@ -8,8 +8,7 @@ import { Route } from "react-router-dom";
 import News from "./components/News/News";
 import Music from "./components/Music/Music";
 import Settings from "./components/Settings/Settings";
-import { Action, State } from "./redux/store";
-import store from "./redux/redux-store";
+import store, { Action, State } from "./redux/redux-store";
 import DialogsContainer from "./components/Dialogs/DialogsContainer";
 import NavbarContainer from "./components/Navbar/NavbarContainer";
 

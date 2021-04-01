@@ -1,4 +1,4 @@
-import { Action, State } from "./store";
+import { Action, State } from "./redux-store";
 
 let initialState = {
   posts: [

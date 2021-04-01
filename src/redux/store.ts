@@ -1,6 +1,7 @@
 import { profileReducer } from "./profile-reducer";
 import { dialogsReducer } from "./dialogs-reducer";
 import { navbarReducer } from "./navbar-reducer";
+import { Action, State } from "./redux-store";
 
 const state = {
   profilePage: {
@@ -78,12 +79,6 @@ const state = {
   },
 };
 
-export type Action =
-  | { type: "ADD-POST" }
-  | { type: "UPDATE-NEW-POST"; text: string }
-  | { type: "SEND-MESSAGE" }
-  | { type: "UPDATE-NEW-MESSAGE-TEXT"; text: string };
-
 let store = {
   rerenderEntireTree: (state: State) => {},
 
@@ -102,7 +97,5 @@ let store = {
     store.rerenderEntireTree = observer;
   },
 };
-
-export type State = typeof state;
 
 export default store;
