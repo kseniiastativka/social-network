@@ -1,4 +1,4 @@
-import { Action, DialogsPage, State } from "./redux-store";
+import { Action, DialogsPage } from "./redux-store";
 
 let initialState = {
   messages: [
@@ -50,20 +50,16 @@ export const dialogsReducer = (
 ) => {
   switch (action.type) {
     case "SEND-MESSAGE":
-      let newMessage = {
-        id: 4,
-        message: state.newMessageText,
+      return {
+        ...state,
+        newMessageText: "",
+        messages: [...state.messages, { id: 4, message: state.newMessageText }],
       };
-      state.messages.push(newMessage);
-      state.newMessageText = "";
-      break;
     case "UPDATE-NEW-MESSAGE-TEXT":
-      state.newMessageText = action.text;
-      break;
+      return { ...state, newMessageText: action.text };
     default:
       return state;
   }
-  return state;
 };
 
 export const sendMessageActionCreator = () =>
