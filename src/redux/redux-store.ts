@@ -2,11 +2,13 @@ import { combineReducers, createStore } from "redux";
 import { profileReducer } from "./profile-reducer";
 import { dialogsReducer } from "./dialogs-reducer";
 import { navbarReducer } from "./navbar-reducer";
+import { usersReducer } from "./users-reducer";
 
 let reducers = combineReducers({
   profilePage: profileReducer,
   dialogsPage: dialogsReducer,
   navbar: navbarReducer,
+  usersPage: usersReducer,
 });
 
 let store = createStore(reducers);
@@ -20,7 +22,10 @@ export type Action =
   | { type: "ADD-POST" }
   | { type: "UPDATE-NEW-POST"; text: string }
   | { type: "SEND-MESSAGE" }
-  | { type: "UPDATE-NEW-MESSAGE-TEXT"; text: string };
+  | { type: "UPDATE-NEW-MESSAGE-TEXT"; text: string }
+  | { type: "FOLLOW"; userId: number }
+  | { type: "UNFOLLOW"; userId: number }
+  | { type: "SET_USERS"; users: User[] };
 
 export interface Post {
   id: number;
@@ -60,8 +65,25 @@ export interface Navbar {
   friends: Friend[];
 }
 
+export interface Users {
+  users: User[];
+}
+
+export interface User {
+  id: number;
+  photo: string;
+  followed: boolean;
+  fullName: string;
+  status: string;
+  location: {
+    city: string;
+    country: string;
+  };
+}
+
 export interface State {
   profilePage: ProfilePage;
   dialogsPage: DialogsPage;
   navbar: Navbar;
+  usersPage: Users;
 }
