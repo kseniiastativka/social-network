@@ -71,9 +71,9 @@ export interface Users {
 
 export interface User {
   id: number;
-  photo: string;
+  photos: { small: string; large: string };
   followed: boolean;
-  fullName: string;
+  name: string;
   status: string;
   location: {
     city: string;

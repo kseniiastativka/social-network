@@ -1,6 +1,8 @@
 import { useEffect } from "react";
 import { User } from "../../redux/redux-store";
 import styles from "./Users.module.css";
+import axios from "axios";
+import userPhoto from "../../assets/images/female.png";
 
 let Users = (props: {
   users: User[];
@@ -10,44 +12,11 @@ let Users = (props: {
 }) => {
   useEffect(() => {
     if (props.users.length === 0) {
-      props.setUsers([
-        {
-          id: 1,
-          photo:
-            "https://e7.pngegg.com/pngimages/773/597/png-clipart-echeveria-succulent-plant-cactaceae-houseleek-suculent-flower-cactus-garden.png",
-          followed: true,
-          fullName: "Kseniia S",
-          status: "I'm learning React",
-          location: { city: "Berlin", country: "Germany" },
-        },
-        {
-          id: 2,
-          photo:
-            "https://e7.pngegg.com/pngimages/773/597/png-clipart-echeveria-succulent-plant-cactaceae-houseleek-suculent-flower-cactus-garden.png",
-          followed: false,
-          fullName: "Yevhen S",
-          status: "I'm one of the best Frontend developers",
-          location: { city: "Berlin", country: "Germany" },
-        },
-        {
-          id: 3,
-          photo:
-            "https://e7.pngegg.com/pngimages/773/597/png-clipart-echeveria-succulent-plant-cactaceae-houseleek-suculent-flower-cactus-garden.png",
-          followed: true,
-          fullName: "Vasiliy R",
-          status: "I like to cook",
-          location: { city: "Kyiv", country: "Ukraine" },
-        },
-        {
-          id: 4,
-          photo:
-            "https://e7.pngegg.com/pngimages/773/597/png-clipart-echeveria-succulent-plant-cactaceae-houseleek-suculent-flower-cactus-garden.png",
-          followed: false,
-          fullName: "Anna M",
-          status: "I'm waiting a baby",
-          location: { city: "Oryol", country: "Russia" },
-        },
-      ]);
+      axios
+        .get("https://social-network.samuraijs.com/api/1.0/users")
+        .then((response) => {
+          props.setUsers(response.data.items);
+        });
     }
   }, [props.users.length]);
 
@@ -57,7 +26,11 @@ let Users = (props: {
         <div key={user.id}>
           <span>
             <div>
-              <img src={user.photo} alt="" className={styles.userPhoto} />
+              <img
+                src={user.photos.small != null ? user.photos.small : userPhoto}
+                alt=""
+                className={styles.userPhoto}
+              />
             </div>
             <div>
               {user.followed ? (
@@ -71,12 +44,12 @@ let Users = (props: {
           </span>
           <span>
             <span>
-              <div>{user.fullName}</div>
+              <div>{user.name}</div>
               <div>{user.status}</div>
             </span>
             <span>
-              <div>{user.location.country}</div>
-              <div>{user.location.city}</div>
+              <div>'user.location.country'</div>
+              <div>'user.location.city'</div>
             </span>
           </span>
         </div>
