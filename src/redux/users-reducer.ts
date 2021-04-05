@@ -2,6 +2,9 @@ import { Action, State, User } from "./redux-store";
 
 let initialState = {
   users: [],
+  pageSize: 5,
+  totalUsersCount: 0,
+  currentPage: 1,
 };
 
 export const usersReducer = (
@@ -33,7 +36,21 @@ export const usersReducer = (
     case "SET_USERS": {
       return {
         ...state,
-        users: [...state.users, ...action.users],
+        users: action.users,
+      };
+    }
+
+    case "SET_CURRENT_PAGE": {
+      return {
+        ...state,
+        currentPage: action.currentPage,
+      };
+    }
+
+    case "SET_TOTAL_USERS_COUNT": {
+      return {
+        ...state,
+        totalUsersCount: action.totalUsersCount,
       };
     }
 
@@ -48,3 +65,7 @@ export const unfollowAC = (userId: number) =>
   ({ type: "UNFOLLOW", userId } as const);
 export const setUsersAC = (users: User[]) =>
   ({ type: "SET_USERS", users } as const);
+export const setCurrentPageAC = (currentPage: number) =>
+  ({ type: "SET_CURRENT_PAGE", currentPage } as const);
+export const setTotalUsersCountAC = (totalUsersCount: number) =>
+  ({ type: "SET_TOTAL_USERS_COUNT", totalUsersCount } as const);

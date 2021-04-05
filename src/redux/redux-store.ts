@@ -25,7 +25,9 @@ export type Action =
   | { type: "UPDATE-NEW-MESSAGE-TEXT"; text: string }
   | { type: "FOLLOW"; userId: number }
   | { type: "UNFOLLOW"; userId: number }
-  | { type: "SET_USERS"; users: User[] };
+  | { type: "SET_USERS"; users: User[] }
+  | { type: "SET_CURRENT_PAGE"; currentPage: number }
+  | { type: "SET_TOTAL_USERS_COUNT"; totalUsersCount: number };
 
 export interface Post {
   id: number;
@@ -67,6 +69,9 @@ export interface Navbar {
 
 export interface Users {
   users: User[];
+  pageSize: number;
+  totalUsersCount: number;
+  currentPage: number;
 }
 
 export interface User {

@@ -7,7 +7,7 @@ const Friends = (props: {
   return (
     <div className={s.friends}>
       {props.friends.map((friend) => (
-        <div className={s.friend}>
+        <div className={s.friend} key={friend.id}>
           <img src={friend.img} alt="" />
           <div className={s.friendName}>{friend.name}</div>
         </div>
