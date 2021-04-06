@@ -27,7 +27,8 @@ export type Action =
   | { type: "UNFOLLOW"; userId: number }
   | { type: "SET_USERS"; users: User[] }
   | { type: "SET_CURRENT_PAGE"; currentPage: number }
-  | { type: "SET_TOTAL_USERS_COUNT"; totalUsersCount: number };
+  | { type: "SET_TOTAL_USERS_COUNT"; totalUsersCount: number }
+  | { type: "TOGGLE_IS_FETCHING"; isFetching: boolean };
 
 export interface Post {
   id: number;
@@ -72,6 +73,7 @@ export interface Users {
   pageSize: number;
   totalUsersCount: number;
   currentPage: number;
+  isFetching: boolean;
 }
 
 export interface User {
