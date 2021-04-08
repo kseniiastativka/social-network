@@ -1,4 +1,4 @@
-import { Action, State } from "./redux-store";
+import { Action, ProfileType, State } from "./redux-store";
 
 let initialState = {
   posts: [
@@ -7,12 +7,13 @@ let initialState = {
     { id: 3, message: "I want banana bread", likesCount: 7 },
   ],
   newPostText: "test",
+  profile: undefined,
 };
 
 export const profileReducer = (
   state: State["profilePage"] = initialState,
   action: Action
-) => {
+): State["profilePage"] => {
   switch (action.type) {
     case "ADD-POST": {
       let newPost = {
@@ -25,12 +26,17 @@ export const profileReducer = (
     case "UPDATE-NEW-POST": {
       return { ...state, newPostText: action.text };
     }
+    case "SET-USER-PROFILE": {
+      return { ...state, profile: action.profile };
+    }
     default:
       return state;
   }
 };
 
 export const addPostActionCreator = () => ({ type: "ADD-POST" } as const);
+export const setUserProfile = (profile: ProfileType) =>
+  ({ type: "SET-USER-PROFILE", profile } as const);
 export const updateNewPostActionCreator = (text: string) =>
   ({
     type: "UPDATE-NEW-POST",

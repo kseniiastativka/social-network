@@ -1,7 +1,8 @@
 import React from "react";
 import s from "./ProfileInfo.module.css";
+import { ProfileType } from "../../../redux/redux-store";
 
-const ProfileInfo = () => {
+const ProfileInfo = (props: { profile: ProfileType }) => {
   return (
     <>
       <div>
@@ -11,7 +12,12 @@ const ProfileInfo = () => {
           alt=""
         />
       </div>
-
+      <div>{props.profile.fullName}</div>
+      <div>About me {props.profile.aboutMe}</div>
+      <div>Looking for a job {props.profile.lookingForAJob}</div>
+      <div>
+        <img src={props.profile.photos.small} alt="" />
+      </div>
       <div className={s.descriptionBlock}>ava + description</div>
     </>
   );

@@ -83,7 +83,7 @@ let store = {
   rerenderEntireTree: (state: State) => {},
 
   dispatch(action: Action) {
-    state.profilePage = profileReducer(state.profilePage, action);
+    // state.profilePage = profileReducer(state.profilePage, action);
     state.dialogsPage = dialogsReducer(state.dialogsPage, action);
     state.navbar = navbarReducer(state.navbar, action);
     // store.rerenderEntireTree(state);

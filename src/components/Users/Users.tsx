@@ -2,6 +2,7 @@ import styles from "./Users.module.css";
 import userPhoto from "../../assets/images/female.png";
 import React from "react";
 import { User } from "../../redux/redux-store";
+import { NavLink } from "react-router-dom";
 
 let Users = (props: {
   users: User[];
@@ -40,11 +41,15 @@ let Users = (props: {
         <div key={user.id}>
           <span>
             <div>
-              <img
-                src={user.photos.small !== null ? user.photos.small : userPhoto}
-                alt=""
-                className={styles.userPhoto}
-              />
+              <NavLink to={"/profile/" + user.id}>
+                <img
+                  src={
+                    user.photos.small !== null ? user.photos.small : userPhoto
+                  }
+                  alt=""
+                  className={styles.userPhoto}
+                />
+              </NavLink>
             </div>
             <div>
               {user.followed ? (

@@ -28,7 +28,8 @@ export type Action =
   | { type: "SET_USERS"; users: User[] }
   | { type: "SET_CURRENT_PAGE"; currentPage: number }
   | { type: "SET_TOTAL_USERS_COUNT"; totalUsersCount: number }
-  | { type: "TOGGLE_IS_FETCHING"; isFetching: boolean };
+  | { type: "TOGGLE_IS_FETCHING"; isFetching: boolean }
+  | { type: "SET-USER-PROFILE"; profile: ProfileType };
 
 export interface Post {
   id: number;
@@ -39,6 +40,7 @@ export interface Post {
 export interface ProfilePage {
   posts: Post[];
   newPostText: string;
+  profile: ProfileType | undefined;
 }
 
 export interface Message {
@@ -86,6 +88,13 @@ export interface User {
     city: string;
     country: string;
   };
+}
+
+export interface ProfileType {
+  fullName: string;
+  aboutMe: string;
+  lookingForAJob: boolean;
+  photos: { small: string; large: string };
 }
 
 export interface State {
