@@ -1,5 +1,5 @@
 import { connect } from "react-redux";
-import { Dispatch, State, User } from "../../redux/redux-store";
+import { State, User } from "../../redux/redux-store";
 import {
   follow,
   setCurrentPage,
@@ -32,7 +32,8 @@ class UsersContainer extends React.Component<UsersProps, any> {
     this.props.toggleIsFetching(true);
     axios
       .get(
-        `https://social-network.samuraijs.com/api/1.0/users?page=${this.props.setCurrentPage}&count=${this.props.pageSize}`
+        `https://social-network.samuraijs.com/api/1.0/users?page=${this.props.setCurrentPage}&count=${this.props.pageSize}`,
+        { withCredentials: true }
       )
       .then((response) => {
         this.props.toggleIsFetching(false);
@@ -46,7 +47,8 @@ class UsersContainer extends React.Component<UsersProps, any> {
     this.props.setCurrentPage(page);
     axios
       .get(
-        `https://social-network.samuraijs.com/api/1.0/users?page=${page}&count=${this.props.pageSize}`
+        `https://social-network.samuraijs.com/api/1.0/users?page=${page}&count=${this.props.pageSize}`,
+        { withCredentials: true }
       )
       .then((response) => {
         this.props.toggleIsFetching(false);
