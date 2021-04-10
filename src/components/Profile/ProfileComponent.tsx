@@ -1,11 +1,11 @@
 import React from "react";
 import Profile from "./Profile";
-import axios from "axios";
 import { connect } from "react-redux";
 import { ProfileType, State } from "../../redux/redux-store";
 import { setUserProfile } from "../../redux/profile-reducer";
 import { withRouter } from "react-router-dom";
 import { RouteComponentProps } from "react-router";
+import { profileAPI } from "../../api/api";
 
 interface ProfileComponentProps
   extends RouteComponentProps<{ userId: string }> {
@@ -19,11 +19,9 @@ class ProfileComponent extends React.Component<ProfileComponentProps> {
     if (!userId) {
       userId = "2";
     }
-    axios
-      .get(`https://social-network.samuraijs.com/api/1.0/profile/` + userId)
-      .then((response) => {
-        this.props.setUserProfile(response.data);
-      });
+    profileAPI.getUserProfile(userId).then((data) => {
+      this.props.setUserProfile(data);
+    });
   }
 
   render() {
