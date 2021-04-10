@@ -3,12 +3,14 @@ import { profileReducer } from "./profile-reducer";
 import { dialogsReducer } from "./dialogs-reducer";
 import { navbarReducer } from "./navbar-reducer";
 import { usersReducer } from "./users-reducer";
+import { authReducer } from "./auth-reducer";
 
 let reducers = combineReducers({
   profilePage: profileReducer,
   dialogsPage: dialogsReducer,
   navbar: navbarReducer,
   usersPage: usersReducer,
+  userAuth: authReducer,
 });
 
 let store = createStore(reducers);
@@ -29,7 +31,8 @@ export type Action =
   | { type: "SET_CURRENT_PAGE"; currentPage: number }
   | { type: "SET_TOTAL_USERS_COUNT"; totalUsersCount: number }
   | { type: "TOGGLE_IS_FETCHING"; isFetching: boolean }
-  | { type: "SET-USER-PROFILE"; profile: ProfileType };
+  | { type: "SET-USER-PROFILE"; profile: ProfileType }
+  | { type: "SET_USER_DATA"; data: UserAuthData };
 
 export interface Post {
   id: number;
@@ -90,6 +93,13 @@ export interface User {
   };
 }
 
+export interface UserAuthData {
+  id: number | undefined;
+  email: string | undefined;
+  login: string | undefined;
+  isAuth: boolean;
+}
+
 export interface ProfileType {
   fullName: string;
   aboutMe: string;
@@ -102,4 +112,5 @@ export interface State {
   dialogsPage: DialogsPage;
   navbar: Navbar;
   usersPage: Users;
+  userAuth: UserAuthData;
 }
