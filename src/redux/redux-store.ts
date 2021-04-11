@@ -32,7 +32,12 @@ export type Action =
   | { type: "SET_TOTAL_USERS_COUNT"; totalUsersCount: number }
   | { type: "TOGGLE_IS_FETCHING"; isFetching: boolean }
   | { type: "SET-USER-PROFILE"; profile: ProfileType }
-  | { type: "SET_USER_DATA"; data: UserAuthData };
+  | { type: "SET_USER_DATA"; data: UserAuthData }
+  | {
+      type: "TOGGLE_IS_FOLLOWING";
+      isFollowingInProgress: boolean;
+      userId: User["id"];
+    };
 
 export interface Post {
   id: number;
@@ -79,6 +84,7 @@ export interface Users {
   totalUsersCount: number;
   currentPage: number;
   isFetching: boolean;
+  followingInProgress: Array<User["id"]>;
 }
 
 export interface User {

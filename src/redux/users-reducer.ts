@@ -1,11 +1,12 @@
 import { Action, State, User } from "./redux-store";
 
-let initialState = {
+let initialState: State["usersPage"] = {
   users: [],
   pageSize: 5,
   totalUsersCount: 0,
   currentPage: 1,
   isFetching: false,
+  followingInProgress: [],
 };
 
 export const usersReducer = (
@@ -61,6 +62,15 @@ export const usersReducer = (
       };
     }
 
+    case "TOGGLE_IS_FOLLOWING": {
+      return {
+        ...state,
+        followingInProgress: action.isFollowingInProgress
+          ? [...state.followingInProgress, action.userId]
+          : state.followingInProgress.filter((id) => id !== action.userId),
+      };
+    }
+
     default:
       return state;
   }
@@ -77,3 +87,12 @@ export const setTotalUsersCount = (totalUsersCount: number) =>
   ({ type: "SET_TOTAL_USERS_COUNT", totalUsersCount } as const);
 export const toggleIsFetching = (isFetching: boolean) =>
   ({ type: "TOGGLE_IS_FETCHING", isFetching } as const);
+export const toggleIsFollowing = (
+  isFollowingInProgress: boolean,
+  userId: User["id"]
+) =>
+  ({
+    type: "TOGGLE_IS_FOLLOWING",
+    isFollowingInProgress: isFollowingInProgress,
+    userId: userId,
+  } as const);
