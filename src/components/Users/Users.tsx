@@ -3,7 +3,6 @@ import userPhoto from "../../assets/images/female.png";
 import React from "react";
 import { User } from "../../redux/redux-store";
 import { NavLink } from "react-router-dom";
-import { followUnfollowAPI } from "../../api/api";
 
 let Users = (props: {
   users: User[];
@@ -13,10 +12,6 @@ let Users = (props: {
   follow: (id: number) => void;
   unfollow: (id: number) => void;
   onPageChanged: (page: number) => void;
-  toggleIsFollowing: (
-    isFollowingInProgress: boolean,
-    userId: User["id"]
-  ) => void;
   isFollowingInProgress: Array<User["id"]>;
 }) => {
   let pagesCount = Math.ceil(props.totalUsersCount / props.pageSize);
@@ -64,13 +59,7 @@ let Users = (props: {
                     (id) => id === user.id
                   )}
                   onClick={() => {
-                    props.toggleIsFollowing(true, user.id);
-                    followUnfollowAPI.unfollow(user.id).then((data) => {
-                      if (data.resultCode === 0) {
-                        props.unfollow(user.id);
-                      }
-                      props.toggleIsFollowing(false, user.id);
-                    });
+                    props.unfollow(user.id);
                   }}
                 >
                   Unfollow
@@ -81,13 +70,7 @@ let Users = (props: {
                     (id) => id === user.id
                   )}
                   onClick={() => {
-                    props.toggleIsFollowing(true, user.id);
-                    followUnfollowAPI.follow(user.id).then((data) => {
-                      if (data.resultCode === 0) {
-                        props.follow(user.id);
-                      }
-                      props.toggleIsFollowing(false, user.id);
-                    });
+                    props.follow(user.id);
                   }}
                 >
                   Follow
