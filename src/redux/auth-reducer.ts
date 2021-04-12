@@ -1,4 +1,5 @@
-import { Action, State, User, UserAuthData } from "./redux-store";
+import { Action, Dispatch, State, User, UserAuthData } from "./redux-store";
+import { authAPI } from "../api/api";
 
 let initialState = {
   id: undefined,
@@ -24,7 +25,18 @@ export const authReducer = (
   }
 };
 
-export const setAuthUserData = (user: UserAuthData) => ({
-  type: "SET_USER_DATA",
-  data: user,
-});
+export const setAuthUserData = (user: UserAuthData) =>
+  ({
+    type: "SET_USER_DATA",
+    data: user,
+  } as const);
+
+export const getUserAuthorisation = () => {
+  return (dispatch: Dispatch) => {
+    authAPI.getCurrentUserAuthorization().then((data) => {
+      if (data.resultCode === 0) {
+        dispatch(setAuthUserData(data.data));
+      }
+    });
+  };
+};

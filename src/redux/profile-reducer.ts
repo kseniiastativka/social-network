@@ -1,4 +1,5 @@
-import { Action, ProfileType, State } from "./redux-store";
+import { Action, Dispatch, ProfileType, State } from "./redux-store";
+import { profileAPI } from "../api/api";
 
 let initialState = {
   posts: [
@@ -42,3 +43,14 @@ export const updateNewPostActionCreator = (text: string) =>
     type: "UPDATE-NEW-POST",
     text: text,
   } as const);
+
+export const getUserProfile = (userId: string) => {
+  return (dispatch: Dispatch) => {
+    if (!userId) {
+      userId = "2";
+    }
+    profileAPI.getUserProfile(userId).then((data) => {
+      dispatch(setUserProfile(data));
+    });
+  };
+};
