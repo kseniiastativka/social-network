@@ -3,14 +3,13 @@ import DialogItem from "./DialogItem/DialogItem";
 import Message from "./Message/Message";
 import React, { ChangeEvent } from "react";
 import { State } from "../../redux/redux-store";
-import { Redirect } from "react-router-dom";
 
-const Dialogs = (props: {
+export interface DialogProps {
   updateNewMessageText: (message: string) => void;
   sendMessage: () => void;
   dialogsPage: State["dialogsPage"];
-  isAuth: boolean;
-}) => {
+}
+const Dialogs = (props: DialogProps) => {
   let dialogElements = props.dialogsPage.dialogs.map((dialog) => (
     <DialogItem
       name={dialog.name}
@@ -33,7 +32,6 @@ const Dialogs = (props: {
     props.updateNewMessageText(message);
   };
 
-  if (!props.isAuth) return <Redirect to={"/login"} />;
   return (
     <div className={s.dialogs}>
       <div className={s.dialogsItems}>{dialogElements}</div>

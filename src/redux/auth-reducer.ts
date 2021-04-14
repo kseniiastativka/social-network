@@ -1,4 +1,4 @@
-import { Action, Dispatch, State, User, UserAuthData } from "./redux-store";
+import { Action, Dispatch, State, UserAuthData } from "./redux-store";
 import { authAPI } from "../api/api";
 
 let initialState = {
