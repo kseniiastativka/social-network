@@ -112,6 +112,7 @@ export interface ProfileType {
   aboutMe: string;
   lookingForAJob: boolean;
   photos: { small: string; large: string };
+  status: string;
 }
 
 export interface State {
