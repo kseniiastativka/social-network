@@ -38,7 +38,8 @@ export type Action =
       type: "TOGGLE_IS_FOLLOWING";
       isFollowingInProgress: boolean;
       userId: User["id"];
-    };
+    }
+  | { type: "SET-USER-STATUS"; status: ProfilePage["status"] };
 
 export interface Post {
   id: number;
@@ -50,6 +51,7 @@ export interface ProfilePage {
   posts: Post[];
   newPostText: string;
   profile: ProfileType | undefined;
+  status: string;
 }
 
 export interface Message {
@@ -112,7 +114,6 @@ export interface ProfileType {
   aboutMe: string;
   lookingForAJob: boolean;
   photos: { small: string; large: string };
-  status: string;
 }
 
 export interface State {

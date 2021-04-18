@@ -1,9 +1,13 @@
 import React from "react";
 import s from "./ProfileInfo.module.css";
-import { ProfileType } from "../../../redux/redux-store";
+import { ProfilePage, ProfileType } from "../../../redux/redux-store";
 import ProfileStatus from "./ProfileStatus";
 
-const ProfileInfo = (props: { profile: ProfileType }) => {
+const ProfileInfo = (props: {
+  profile: ProfileType;
+  status: ProfilePage["status"];
+  updateUserStatus: (status: string) => void;
+}) => {
   return (
     <>
       <div>
@@ -20,7 +24,10 @@ const ProfileInfo = (props: { profile: ProfileType }) => {
         <img src={props.profile.photos.small} alt="" />
       </div>
       <div className={s.descriptionBlock}>
-        <ProfileStatus status={props.profile.status} />
+        <ProfileStatus
+          status={props.status}
+          updateUserStatus={props.updateUserStatus}
+        />
       </div>
     </>
   );
