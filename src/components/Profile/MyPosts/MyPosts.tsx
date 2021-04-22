@@ -1,12 +1,49 @@
 import React from "react";
 import s from "./MyPosts.module.css";
 import Post from "./Post/Post";
+import { ErrorMessage, Field, Form, Formik } from "formik";
 
+interface Values {
+  message: string;
+}
+
+const TextPostForm = (props: { onSubmit: (message: string) => void }) => {
+  return (
+    <>
+      <Formik<Values>
+        initialValues={{ message: "" }}
+        onSubmit={(values, { setSubmitting, resetForm }) => {
+          props.onSubmit(values.message);
+          setSubmitting(false);
+          resetForm();
+        }}
+      >
+        {(form) => {
+          return (
+            <Form>
+              <Field
+                as="textarea"
+                type="message"
+                name="message"
+                placeholder={"Enter your post message"}
+              />
+              <ErrorMessage name="email" component="div" />
+
+              <div>
+                <button type="submit" disabled={form.isSubmitting}>
+                  Add Post
+                </button>
+              </div>
+            </Form>
+          );
+        }}
+      </Formik>
+    </>
+  );
+};
 const MyPosts = (props: {
   posts: { message: string; likesCount: number }[];
-  addPost: () => void;
-  updateNewPostText: (text: string) => void;
-  newPostText: string;
+  addPost: (message: string) => void;
 }) => {
   let postElements = props.posts.map((post) => (
     <Post
@@ -16,30 +53,10 @@ const MyPosts = (props: {
     />
   ));
 
-  let newPostsElement = React.createRef<any>();
-
-  let addPost = () => {
-    props.addPost();
-  };
-
-  let onPostChange = () => {
-    let text = newPostsElement.current.value;
-    props.updateNewPostText(text);
-  };
-
   return (
     <div className={s.postsBlock}>
       <h3>MY POSTS</h3>
-      <div>
-        <textarea
-          ref={newPostsElement}
-          onChange={onPostChange}
-          value={props.newPostText}
-        />
-      </div>
-      <div>
-        <button onClick={addPost}>Add post</button>
-      </div>
+      <TextPostForm onSubmit={props.addPost} />
       <div className={s.posts}>{postElements}</div>
     </div>
   );

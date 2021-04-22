@@ -26,10 +26,8 @@ export type Dispatch = Store["dispatch"];
 export default store;
 
 export type Action =
-  | { type: "ADD-POST" }
-  | { type: "UPDATE-NEW-POST"; text: string }
-  | { type: "SEND-MESSAGE" }
-  | { type: "UPDATE-NEW-MESSAGE-TEXT"; text: string }
+  | { type: "ADD-POST"; text: string }
+  | { type: "SEND-MESSAGE"; text: string }
   | { type: "FOLLOW"; userId: number }
   | { type: "UNFOLLOW"; userId: number }
   | { type: "SET_USERS"; users: User[] }
@@ -53,7 +51,6 @@ export interface Post {
 
 export interface ProfilePage {
   posts: Post[];
-  newPostText: string;
   profile: ProfileType | undefined;
   status: string;
 }

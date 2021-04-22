@@ -13,7 +13,6 @@ let initialState = {
     { id: 2, message: "I have a vacation soon!", likesCount: 34 },
     { id: 3, message: "I want banana bread", likesCount: 7 },
   ],
-  newPostText: "test",
   profile: undefined,
   status: "",
 };
@@ -26,13 +25,10 @@ export const profileReducer = (
     case "ADD-POST": {
       let newPost = {
         id: 5,
-        message: state.newPostText,
+        message: action.text,
         likesCount: 0,
       };
-      return { ...state, posts: [...state.posts, newPost], newPostText: "" };
-    }
-    case "UPDATE-NEW-POST": {
-      return { ...state, newPostText: action.text };
+      return { ...state, posts: [...state.posts, newPost] };
     }
     case "SET-USER-PROFILE": {
       return { ...state, profile: action.profile };
@@ -45,14 +41,10 @@ export const profileReducer = (
   }
 };
 
-export const addPostActionCreator = () => ({ type: "ADD-POST" } as const);
+export const addPostActionCreator = (message: string) =>
+  ({ type: "ADD-POST", text: message } as const);
 export const setUserProfile = (profile: ProfileType) =>
   ({ type: "SET-USER-PROFILE", profile } as const);
-export const updateNewPostActionCreator = (text: string) =>
-  ({
-    type: "UPDATE-NEW-POST",
-    text: text,
-  } as const);
 
 export const setUserStatus = (status: ProfilePage["status"]) =>
   ({ type: "SET-USER-STATUS", status } as const);

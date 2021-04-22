@@ -53,16 +53,12 @@ export const dialogsReducer = (
       return {
         ...state,
         newMessageText: "",
-        messages: [...state.messages, { id: 4, message: state.newMessageText }],
+        messages: [...state.messages, { id: 4, message: action.text }],
       };
-    case "UPDATE-NEW-MESSAGE-TEXT":
-      return { ...state, newMessageText: action.text };
     default:
       return state;
   }
 };
 
-export const sendMessageActionCreator = () =>
-  ({ type: "SEND-MESSAGE" } as const);
-export const updateNewMessageTextActionCreator = (message: string) =>
-  ({ type: "UPDATE-NEW-MESSAGE-TEXT", text: message } as const);
+export const sendMessageActionCreator = (message: string) =>
+  ({ type: "SEND-MESSAGE", text: message } as const);
