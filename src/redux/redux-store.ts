@@ -5,6 +5,7 @@ import { navbarReducer } from "./navbar-reducer";
 import { usersReducer } from "./users-reducer";
 import { authReducer } from "./auth-reducer";
 import thunkMiddleWare from "redux-thunk";
+import { composeWithDevTools } from "redux-devtools-extension";
 
 let reducers = combineReducers({
   profilePage: profileReducer,
@@ -14,7 +15,10 @@ let reducers = combineReducers({
   userAuth: authReducer,
 });
 
-let store = createStore(reducers, applyMiddleware(thunkMiddleWare));
+let store = createStore(
+  reducers,
+  composeWithDevTools(applyMiddleware(thunkMiddleWare))
+);
 
 export type Store = typeof store;
 export type Dispatch = Store["dispatch"];
