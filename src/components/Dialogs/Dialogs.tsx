@@ -3,7 +3,9 @@ import DialogItem from "./DialogItem/DialogItem";
 import Message from "./Message/Message";
 import React from "react";
 import { State } from "../../redux/redux-store";
-import { ErrorMessage, Field, Form, Formik } from "formik";
+import { Field, Form, Formik } from "formik";
+import * as Yup from "yup";
+import { Textarea } from "../common/FormControls/FormControls";
 
 export interface DialogProps {
   sendMessage: (message: string) => void;
@@ -14,11 +16,19 @@ interface Values {
   message: string;
 }
 
+const TextAreaSchema = Yup.object().shape({
+  message: Yup.string()
+    .min(2, "Too Short!")
+    .max(50, "Too Long!")
+    .required("Required"),
+});
+
 const TextMessageForm = (props: { onSubmit: (message: string) => void }) => {
   return (
     <>
       <Formik<Values>
         initialValues={{ message: "" }}
+        validationSchema={TextAreaSchema}
         onSubmit={(values, { setSubmitting, resetForm }) => {
           props.onSubmit(values.message);
           setSubmitting(false);
@@ -29,13 +39,11 @@ const TextMessageForm = (props: { onSubmit: (message: string) => void }) => {
           return (
             <Form>
               <Field
-                as="textarea"
+                component={Textarea}
                 type="message"
                 name="message"
                 placeholder={"Enter your message"}
               />
-              <ErrorMessage name="email" component="div" />
-
               <div>
                 <button type="submit" disabled={form.isSubmitting}>
                   Send Message

@@ -1,5 +1,8 @@
-import { ErrorMessage, Field, Form, Formik } from "formik";
+import { Field, Form, Formik } from "formik";
 import { authAPI } from "../../api/api";
+import { Input } from "../common/FormControls/FormControls";
+import React from "react";
+import * as Yup from "yup";
 
 interface Values {
   email: string;
@@ -7,11 +10,24 @@ interface Values {
   rememberMe: boolean;
 }
 
+const InputAreaSchema = Yup.object().shape({
+  email: Yup.string()
+    .min(2, "Too Short!")
+    .max(50, "Too Long!")
+    .required("Required"),
+  password: Yup.string()
+    .min(2, "Too Short!")
+    .max(50, "Too Long!")
+    .required("Required"),
+  rememberMe: Yup.boolean(),
+});
+
 export const LoginForm = () => {
   return (
     <>
       <Formik<Values>
         initialValues={{ email: "", password: "", rememberMe: false }}
+        validationSchema={InputAreaSchema}
         onSubmit={(values, { setSubmitting }) => {
           authAPI.login(values).then((responce) => {
             if (responce.resultCode === 0) {
@@ -23,10 +39,18 @@ export const LoginForm = () => {
         {(form) => {
           return (
             <Form>
-              <Field type="email" name="email" placeholder={"email"} />
-              <ErrorMessage name="email" component="div" />
-              <Field type="password" name="password" placeholder={"password"} />
-              <ErrorMessage name="password" component="div" />
+              <Field
+                type="email"
+                name="email"
+                placeholder={"email"}
+                component={Input}
+              />
+              <Field
+                type="password"
+                name="password"
+                placeholder={"password"}
+                component={Input}
+              />
               <label>
                 Remember me
                 <Field type="checkbox" name="rememberMe" />

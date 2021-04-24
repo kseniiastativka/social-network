@@ -1,17 +1,27 @@
 import React from "react";
 import s from "./MyPosts.module.css";
 import Post from "./Post/Post";
-import { ErrorMessage, Field, Form, Formik } from "formik";
+import { Field, Form, Formik } from "formik";
+import * as Yup from "yup";
+import { Textarea } from "../../common/FormControls/FormControls";
 
 interface Values {
   message: string;
 }
+
+const TextAreaSchema = Yup.object().shape({
+  message: Yup.string()
+    .min(2, "Too Short!")
+    .max(50, "Too Long!")
+    .required("Required"),
+});
 
 const TextPostForm = (props: { onSubmit: (message: string) => void }) => {
   return (
     <>
       <Formik<Values>
         initialValues={{ message: "" }}
+        validationSchema={TextAreaSchema}
         onSubmit={(values, { setSubmitting, resetForm }) => {
           props.onSubmit(values.message);
           setSubmitting(false);
@@ -22,13 +32,11 @@ const TextPostForm = (props: { onSubmit: (message: string) => void }) => {
           return (
             <Form>
               <Field
-                as="textarea"
+                component={Textarea}
                 type="message"
                 name="message"
                 placeholder={"Enter your post message"}
               />
-              <ErrorMessage name="email" component="div" />
-
               <div>
                 <button type="submit" disabled={form.isSubmitting}>
                   Add Post
