@@ -17,7 +17,6 @@ export const authReducer = (
       return {
         ...state,
         ...action.data,
-        isAuth: true,
       };
 
     default:
@@ -35,7 +34,39 @@ export const getUserAuthorisation = () => {
   return (dispatch: Dispatch) => {
     authAPI.getCurrentUserAuthorization().then((data) => {
       if (data.resultCode === 0) {
-        dispatch(setAuthUserData(data.data));
+        dispatch(setAuthUserData({ ...data.data, isAuth: true }));
+      }
+    });
+  };
+};
+
+export const login = (userData: {
+  email: string;
+  password: string;
+  rememberMe: boolean;
+}) => {
+  return (dispatch: Dispatch) => {
+    authAPI.login(userData).then((data) => {
+      if (data.resultCode === 0) {
+        // @ts-expect-error
+        dispatch(getUserAuthorisation());
+      }
+    });
+  };
+};
+
+export const logout = () => {
+  return (dispatch: Dispatch) => {
+    authAPI.logout().then((data) => {
+      if (data.resultCode === 0) {
+        dispatch(
+          setAuthUserData({
+            id: undefined,
+            login: undefined,
+            email: undefined,
+            isAuth: false,
+          })
+        );
       }
     });
   };

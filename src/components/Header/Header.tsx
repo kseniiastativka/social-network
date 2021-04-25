@@ -3,7 +3,9 @@ import { NavLink } from "react-router-dom";
 import s from "./Header.module.css";
 import { UserAuthData } from "../../redux/redux-store";
 
-const Header: FC<{ userAuthData: UserAuthData }> = (props) => {
+const Header: FC<{ userAuthData: UserAuthData; logout: () => void }> = (
+  props
+) => {
   return (
     <header className={s.header}>
       <img
@@ -12,7 +14,10 @@ const Header: FC<{ userAuthData: UserAuthData }> = (props) => {
       />
       <div className={s.loginBlock}>
         {props.userAuthData.isAuth ? (
-          props.userAuthData.login
+          <div>
+            {props.userAuthData.login}
+            <button onClick={props.logout}>Log out</button>
+          </div>
         ) : (
           <NavLink to={"/login"}>Login</NavLink>
         )}

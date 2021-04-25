@@ -4,6 +4,7 @@ import { State, UserAuthData } from "../../redux/redux-store";
 import { connect } from "react-redux";
 import {
   getUserAuthorisation,
+  logout,
   setAuthUserData,
 } from "../../redux/auth-reducer";
 
@@ -11,6 +12,7 @@ interface HeaderComponentProps {
   setAuthUserData: (userAuth: UserAuthData) => void;
   userAuthData: UserAuthData;
   getUserAuthorisation: () => void;
+  logout: () => void;
 }
 
 class HeaderContainer extends React.Component<HeaderComponentProps> {
@@ -29,4 +31,5 @@ const mapStateToProps = (state: State) => ({
 export default connect(mapStateToProps, {
   setAuthUserData,
   getUserAuthorisation,
+  logout,
 })(HeaderContainer);

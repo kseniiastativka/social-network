@@ -1,8 +1,11 @@
 import { Field, Form, Formik } from "formik";
-import { authAPI } from "../../api/api";
 import { Input } from "../common/FormControls/FormControls";
 import React from "react";
 import * as Yup from "yup";
+import { connect } from "react-redux";
+import { login } from "../../redux/auth-reducer";
+import { Redirect } from "react-router-dom";
+import { State } from "../../redux/redux-store";
 
 interface Values {
   email: string;
@@ -22,18 +25,15 @@ const InputAreaSchema = Yup.object().shape({
   rememberMe: Yup.boolean(),
 });
 
-export const LoginForm = () => {
+const LoginForm = (props: { onsubmit: (values: Values) => void }) => {
   return (
     <>
       <Formik<Values>
         initialValues={{ email: "", password: "", rememberMe: false }}
         validationSchema={InputAreaSchema}
         onSubmit={(values, { setSubmitting }) => {
-          authAPI.login(values).then((responce) => {
-            if (responce.resultCode === 0) {
-              setSubmitting(false);
-            }
-          });
+          props.onsubmit(values);
+          setSubmitting(false);
         }}
       >
         {(form) => {
@@ -67,11 +67,23 @@ export const LoginForm = () => {
   );
 };
 
-export const Login = () => {
+const LoginWrapper = (props: {
+  login: (values: Values) => void;
+  isAuth: boolean;
+}) => {
+  if (props.isAuth) {
+    return <Redirect to={"/profile"} />;
+  }
   return (
     <div>
       <h1>LOGIN</h1>
-      <LoginForm />
+      <LoginForm onsubmit={props.login} />
     </div>
   );
 };
+
+const mapStateToProps = (state: State) => ({
+  isAuth: state.userAuth.isAuth,
+});
+
+export const Login = connect(mapStateToProps, { login })(LoginWrapper);
