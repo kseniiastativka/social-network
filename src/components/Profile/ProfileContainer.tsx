@@ -19,11 +19,16 @@ interface ProfileComponentProps
   getUserStatus: (userId: string) => void;
   updateUserStatus: (status: string) => void;
   status: ProfilePage["status"];
+  authorizedUserID: number | undefined;
+  isAuth: boolean;
 }
 
 class ProfileContainer extends React.Component<ProfileComponentProps> {
   componentDidMount() {
     let userId = this.props.match.params.userId;
+    if (!userId) {
+      userId = this.props.authorizedUserID?.toString() ?? "";
+    }
     this.props.getUserProfile(userId);
     this.props.getUserStatus(userId);
   }
@@ -48,6 +53,8 @@ class ProfileContainer extends React.Component<ProfileComponentProps> {
 let mapStateToProps = (state: State) => ({
   profile: state.profilePage.profile,
   status: state.profilePage.status,
+  authorizedUserID: state.userAuth.id,
+  isAuth: state.userAuth.isAuth,
 });
 
 export default compose<
@@ -58,6 +65,8 @@ export default compose<
     getUserStatus: (userId: string) => void;
     updateUserStatus: (status: string) => void;
     status: ProfilePage["status"];
+    authorizedUserID: number | undefined;
+    isAuth: boolean;
   }>,
   ComponentType<ProfileComponentProps>,
   ComponentType<{}>
