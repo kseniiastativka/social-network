@@ -6,6 +6,7 @@ let initialState = {
   email: undefined,
   login: undefined,
   isAuth: false,
+  loginErrorMessage: undefined,
 };
 
 export const authReducer = (
@@ -18,7 +19,11 @@ export const authReducer = (
         ...state,
         ...action.data,
       };
-
+    case "SET-LOGIN-ERROR":
+      return {
+        ...state,
+        loginErrorMessage: action.message,
+      };
     default:
       return state;
   }
@@ -50,6 +55,11 @@ export const login = (userData: {
       if (data.resultCode === 0) {
         // @ts-expect-error
         dispatch(getUserAuthorisation());
+      } else {
+        dispatch({
+          type: "SET-LOGIN-ERROR",
+          message: data.messages[0] ?? "Could not log in",
+        });
       }
     });
   };
@@ -65,6 +75,7 @@ export const logout = () => {
             login: undefined,
             email: undefined,
             isAuth: false,
+            loginErrorMessage: undefined,
           })
         );
       }

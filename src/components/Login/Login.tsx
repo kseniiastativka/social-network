@@ -6,6 +6,7 @@ import { connect } from "react-redux";
 import { login } from "../../redux/auth-reducer";
 import { Redirect } from "react-router-dom";
 import { State } from "../../redux/redux-store";
+import styles from "./Logn.module.css";
 
 interface Values {
   email: string;
@@ -25,7 +26,10 @@ const InputAreaSchema = Yup.object().shape({
   rememberMe: Yup.boolean(),
 });
 
-const LoginForm = (props: { onsubmit: (values: Values) => void }) => {
+const LoginForm = (props: {
+  onsubmit: (values: Values) => void;
+  loginError?: string;
+}) => {
   return (
     <>
       <Formik<Values>
@@ -51,6 +55,9 @@ const LoginForm = (props: { onsubmit: (values: Values) => void }) => {
                 placeholder={"password"}
                 component={Input}
               />
+              {props.loginError !== undefined && (
+                <div className={styles.error}>{props.loginError}</div>
+              )}
               <label>
                 Remember me
                 <Field type="checkbox" name="rememberMe" />
@@ -70,6 +77,7 @@ const LoginForm = (props: { onsubmit: (values: Values) => void }) => {
 const LoginWrapper = (props: {
   login: (values: Values) => void;
   isAuth: boolean;
+  loginErrorMessage: string | undefined;
 }) => {
   if (props.isAuth) {
     return <Redirect to={"/profile"} />;
@@ -77,13 +85,14 @@ const LoginWrapper = (props: {
   return (
     <div>
       <h1>LOGIN</h1>
-      <LoginForm onsubmit={props.login} />
+      <LoginForm onsubmit={props.login} loginError={props.loginErrorMessage} />
     </div>
   );
 };
 
 const mapStateToProps = (state: State) => ({
   isAuth: state.userAuth.isAuth,
+  loginErrorMessage: state.userAuth.loginErrorMessage,
 });
 
 export const Login = connect(mapStateToProps, { login })(LoginWrapper);
