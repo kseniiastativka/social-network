@@ -2,7 +2,7 @@ import { connect } from "react-redux";
 import { State, User } from "../../redux/redux-store";
 import {
   follow,
-  getUsers,
+  requestUsers,
   setCurrentPage,
   unfollow,
 } from "../../redux/users-reducer";
@@ -10,6 +10,14 @@ import React from "react";
 import Users from "./Users";
 import Spinner from "../common/Spinner/Spinner";
 import { compose } from "redux";
+import {
+  getFollowingInProgress,
+  getPageSize,
+  getTotalUsersCount,
+  getUsersList,
+  getUsersCurrentPage,
+  isFetching,
+} from "../../redux/users-selectors";
 
 type UsersProps = {
   users: User[];
@@ -53,14 +61,25 @@ class UsersContainer extends React.Component<UsersProps, any> {
   }
 }
 
+// let mapStateToProps = (state: State) => {
+//   return {
+//     users: state.usersPage.users,
+//     pageSize: state.usersPage.pageSize,
+//     totalUsersCount: state.usersPage.totalUsersCount,
+//     currentPage: state.usersPage.currentPage,
+//     isFetching: state.usersPage.isFetching,
+//     followingInProgress: state.usersPage.followingInProgress,
+//   };
+// };
+
 let mapStateToProps = (state: State) => {
   return {
-    users: state.usersPage.users,
-    pageSize: state.usersPage.pageSize,
-    totalUsersCount: state.usersPage.totalUsersCount,
-    currentPage: state.usersPage.currentPage,
-    isFetching: state.usersPage.isFetching,
-    followingInProgress: state.usersPage.followingInProgress,
+    users: getUsersList(state),
+    pageSize: getPageSize(state),
+    totalUsersCount: getTotalUsersCount(state),
+    currentPage: getUsersCurrentPage(state),
+    isFetching: isFetching(state),
+    followingInProgress: getFollowingInProgress(state),
   };
 };
 
@@ -69,6 +88,6 @@ export default compose(
     follow,
     unfollow,
     setCurrentPage,
-    getUsers,
+    getUsers: requestUsers,
   })
 )(UsersContainer);
