@@ -6,11 +6,10 @@ import {
   setCurrentPage,
   unfollow,
 } from "../../redux/users-reducer";
-import React, { ComponentType } from "react";
+import React from "react";
 import Users from "./Users";
 import Spinner from "../common/Spinner/Spinner";
 import { compose } from "redux";
-import { withAuthRedirect } from "../hoc/withAuthRedirect";
 
 type UsersProps = {
   users: User[];
@@ -65,16 +64,11 @@ let mapStateToProps = (state: State) => {
   };
 };
 
-export default compose<
-  ComponentType<UsersProps>,
-  ComponentType<UsersProps>,
-  ComponentType<{}>
->(
+export default compose(
   connect(mapStateToProps, {
     follow,
     unfollow,
     setCurrentPage,
     getUsers,
-  }),
-  withAuthRedirect
+  })
 )(UsersContainer);

@@ -16,10 +16,6 @@ interface HeaderComponentProps {
 }
 
 class HeaderContainer extends React.Component<HeaderComponentProps> {
-  componentDidMount() {
-    this.props.getUserAuthorisation();
-  }
-
   render() {
     return <Header {...this.props} />;
   }

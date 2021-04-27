@@ -6,6 +6,7 @@ import { usersReducer } from "./users-reducer";
 import { authReducer } from "./auth-reducer";
 import thunkMiddleWare from "redux-thunk";
 import { composeWithDevTools } from "redux-devtools-extension";
+import { appReducer } from "./app-reducer";
 
 let reducers = combineReducers({
   profilePage: profileReducer,
@@ -13,6 +14,7 @@ let reducers = combineReducers({
   navbar: navbarReducer,
   usersPage: usersReducer,
   userAuth: authReducer,
+  app: appReducer,
 });
 
 let store = createStore(
@@ -42,7 +44,12 @@ export type Action =
       isFollowingInProgress: boolean;
       userId: User["id"];
     }
-  | { type: "SET-USER-STATUS"; status: ProfilePage["status"] };
+  | { type: "SET-USER-STATUS"; status: ProfilePage["status"] }
+  | { type: "INITIALIZED_SUCCESS" };
+
+export interface App {
+  initialized: boolean;
+}
 
 export interface Post {
   id: number;
@@ -125,4 +132,5 @@ export interface State {
   navbar: Navbar;
   usersPage: Users;
   userAuth: UserAuthData;
+  app: App;
 }
