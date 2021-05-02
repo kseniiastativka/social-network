@@ -49,24 +49,28 @@ const TextPostForm = (props: { onSubmit: (message: string) => void }) => {
     </>
   );
 };
-const MyPosts = (props: {
-  posts: { message: string; likesCount: number }[];
-  addPost: (message: string) => void;
-}) => {
-  let postElements = props.posts.map((post) => (
-    <Post
-      key={post.message}
-      message={post.message}
-      likesCount={post.likesCount}
-    />
-  ));
 
-  return (
-    <div className={s.postsBlock}>
-      <h3>MY POSTS</h3>
-      <TextPostForm onSubmit={props.addPost} />
-      <div className={s.posts}>{postElements}</div>
-    </div>
-  );
-};
+const MyPosts = React.memo(
+  (props: {
+    posts: { message: string; likesCount: number }[];
+    addPost: (message: string) => void;
+  }) => {
+    let postElements = props.posts.map((post) => (
+      <Post
+        key={post.message}
+        message={post.message}
+        likesCount={post.likesCount}
+      />
+    ));
+
+    return (
+      <div className={s.postsBlock}>
+        <h3>MY POSTS</h3>
+        <TextPostForm onSubmit={props.addPost} />
+        <div className={s.posts}>{postElements}</div>
+      </div>
+    );
+  }
+);
+
 export default MyPosts;
