@@ -26,7 +26,10 @@ const InputAreaSchema = Yup.object().shape({
   rememberMe: Yup.boolean(),
 });
 
-const LoginForm = (props: {
+const LoginForm = ({
+  loginError,
+  onsubmit,
+}: {
   onsubmit: (values: Values) => void;
   loginError?: string;
 }) => {
@@ -36,7 +39,7 @@ const LoginForm = (props: {
         initialValues={{ email: "", password: "", rememberMe: false }}
         validationSchema={InputAreaSchema}
         onSubmit={(values, { setSubmitting }) => {
-          props.onsubmit(values);
+          onsubmit(values);
           setSubmitting(false);
         }}
       >
@@ -55,8 +58,8 @@ const LoginForm = (props: {
                 placeholder={"password"}
                 component={Input}
               />
-              {props.loginError !== undefined && (
-                <div className={styles.error}>{props.loginError}</div>
+              {loginError !== undefined && (
+                <div className={styles.error}>{loginError}</div>
               )}
               <label>
                 Remember me

@@ -7,7 +7,7 @@ import {
 } from "./redux-store";
 import { profileAPI } from "../api/api";
 
-let initialState = {
+const initialState = {
   posts: [
     { id: 1, message: "Miss me?", likesCount: 12 },
     { id: 2, message: "I have a vacation soon!", likesCount: 34 },
@@ -49,34 +49,29 @@ export const setUserProfile = (profile: ProfileType) =>
 export const setUserStatus = (status: ProfilePage["status"]) =>
   ({ type: "SET-USER-STATUS", status } as const);
 
-export const getUserProfile = (userId: string) => {
-  return (dispatch: Dispatch) => {
-    if (!userId) {
-      userId = "16447";
-    }
-    profileAPI.getUserProfile(userId).then((data) => {
-      dispatch(setUserProfile(data));
-    });
-  };
+export const getUserProfile = (userId: string) => async (
+  dispatch: Dispatch
+) => {
+  const responce = await profileAPI.getUserProfile(userId);
+  if (!userId) {
+    userId = "16447";
+  }
+  dispatch(setUserProfile(responce));
 };
 
-export const getUserStatus = (userId: string) => {
-  return (dispatch: Dispatch) => {
-    if (!userId) {
-      userId = "16447";
-    }
-    profileAPI.getUserStatus(userId).then((data) => {
-      dispatch(setUserStatus(data));
-    });
-  };
+export const getUserStatus = (userId: string) => async (dispatch: Dispatch) => {
+  const response = await profileAPI.getUserStatus(userId);
+  if (!userId) {
+    userId = "16447";
+  }
+  dispatch(setUserStatus(response));
 };
 
-export const updateUserStatus = (status: string) => {
-  return (dispatch: Dispatch) => {
-    profileAPI.updateUserStatus(status).then((data) => {
-      if (data.resultCode === 0) {
-        dispatch(setUserStatus(status));
-      }
-    });
-  };
+export const updateUserStatus = (status: string) => async (
+  dispatch: Dispatch
+) => {
+  const responce = await profileAPI.updateUserStatus(status);
+  if (responce.resultCode === 0) {
+    dispatch(setUserStatus(status));
+  }
 };

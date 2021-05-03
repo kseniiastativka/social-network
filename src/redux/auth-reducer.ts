@@ -1,5 +1,6 @@
 import { Action, Dispatch, State, UserAuthData } from "./redux-store";
 import { authAPI } from "../api/api";
+
 let initialState = {
   id: undefined,
   email: undefined,
@@ -34,48 +35,41 @@ export const setAuthUserData = (user: UserAuthData) =>
     data: user,
   } as const);
 
-export const getUserAuthorisation = () => (dispatch: Dispatch) => {
-  return authAPI.getCurrentUserAuthorization().then((data) => {
-    if (data.resultCode === 0) {
-      dispatch(setAuthUserData({ ...data.data, isAuth: true }));
-    }
-  });
+export const getUserAuthorisation = () => async (dispatch: Dispatch) => {
+  let response = await authAPI.getCurrentUserAuthorization();
+  if (response.resultCode === 0) {
+    dispatch(setAuthUserData({ ...response.data, isAuth: true }));
+  }
 };
 
 export const login = (userData: {
   email: string;
   password: string;
   rememberMe: boolean;
-}) => {
-  return (dispatch: Dispatch) => {
-    authAPI.login(userData).then((data) => {
-      if (data.resultCode === 0) {
-        // @ts-expect-error
-        dispatch(getUserAuthorisation());
-      } else {
-        dispatch({
-          type: "SET-LOGIN-ERROR",
-          message: data.messages[0] ?? "Could not log in",
-        });
-      }
+}) => async (dispatch: Dispatch) => {
+  let response = await authAPI.login(userData);
+  if (response.resultCode === 0) {
+    // @ts-expect-error
+    dispatch(getUserAuthorisation());
+  } else {
+    dispatch({
+      type: "SET-LOGIN-ERROR",
+      message: response.messages[0] ?? "Could not log in",
     });
-  };
+  }
 };
 
-export const logout = () => {
-  return (dispatch: Dispatch) => {
-    authAPI.logout().then((data) => {
-      if (data.resultCode === 0) {
-        dispatch(
-          setAuthUserData({
-            id: undefined,
-            login: undefined,
-            email: undefined,
-            isAuth: false,
-            loginErrorMessage: undefined,
-          })
-        );
-      }
-    });
-  };
+export const logout = () => async (dispatch: Dispatch) => {
+  let response = await authAPI.logout();
+  if (response.resultCode === 0) {
+    dispatch(
+      setAuthUserData({
+        id: undefined,
+        login: undefined,
+        email: undefined,
+        isAuth: false,
+        loginErrorMessage: undefined,
+      })
+    );
+  }
 };
