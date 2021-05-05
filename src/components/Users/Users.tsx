@@ -25,10 +25,11 @@ let Users = ({
   return (
     <div>
       <Paginator
-        totalUsersCount={totalUsersCount}
+        totalItemsCount={totalUsersCount}
         pageSize={pageSize}
         currentPage={currentPage}
         onPageChanged={onPageChanged}
+        portionSize={10}
       />
       {users.map((user) => (
         <UserComponent
