@@ -5,6 +5,7 @@ import { ProfilePage, ProfileType, State } from "../../redux/redux-store";
 import {
   getUserProfile,
   getUserStatus,
+  savePhoto,
   updateUserStatus,
 } from "../../redux/profile-reducer";
 import { withRouter } from "react-router-dom";
@@ -20,10 +21,11 @@ interface ProfileComponentProps
   status: ProfilePage["status"];
   authorizedUserID: number | undefined;
   isAuth: boolean;
+  savePhoto: (file: File) => void;
 }
 
 class ProfileContainer extends React.Component<ProfileComponentProps> {
-  componentDidMount() {
+  refreshProfile() {
     let userId = this.props.match.params.userId;
     if (!userId) {
       userId = this.props.authorizedUserID?.toString() ?? "";
@@ -35,6 +37,20 @@ class ProfileContainer extends React.Component<ProfileComponentProps> {
     this.props.getUserStatus(userId);
   }
 
+  componentDidMount() {
+    this.refreshProfile();
+  }
+
+  componentDidUpdate(
+    prevProps: Readonly<ProfileComponentProps>,
+    prevState: Readonly<{}>,
+    snapshot?: any
+  ) {
+    if (this.props.match.params.userId !== prevProps.match.params.userId) {
+      this.refreshProfile();
+    }
+  }
+
   render() {
     if (this.props.profile === undefined) {
       return null;
@@ -43,9 +59,11 @@ class ProfileContainer extends React.Component<ProfileComponentProps> {
     return (
       <>
         <Profile
+          isOwner={!this.props.match.params.userId}
           profile={this.props.profile}
           status={this.props.status}
           updateUserStatus={this.props.updateUserStatus}
+          savePhoto={this.props.savePhoto}
         />
       </>
     );
@@ -68,10 +86,16 @@ export default compose<
     status: ProfilePage["status"];
     authorizedUserID: number | undefined;
     isAuth: boolean;
+    savePhoto: (file: File) => void;
   }>,
   ComponentType<ProfileComponentProps>,
   ComponentType<{}>
 >(
-  connect(mapStateToProps, { getUserProfile, getUserStatus, updateUserStatus }),
+  connect(mapStateToProps, {
+    getUserProfile,
+    getUserStatus,
+    updateUserStatus,
+    savePhoto,
+  }),
   withRouter
 )(ProfileContainer);

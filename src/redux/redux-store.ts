@@ -45,7 +45,8 @@ export type Action =
       userId: User["id"];
     }
   | { type: "SET-USER-STATUS"; status: ProfilePage["status"] }
-  | { type: "INITIALIZED_SUCCESS" };
+  | { type: "INITIALIZED_SUCCESS" }
+  | { type: "SAVE-PHOTO-SUCCESS"; photos: ProfileType["photos"] };
 
 export interface App {
   initialized: boolean;

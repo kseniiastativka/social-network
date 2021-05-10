@@ -36,6 +36,13 @@ export const profileReducer = (
     case "SET-USER-STATUS": {
       return { ...state, status: action.status };
     }
+    case "SAVE-PHOTO-SUCCESS": {
+      if (state.profile === undefined) {
+        return state;
+      }
+
+      return { ...state, profile: { ...state.profile, photos: action.photos } };
+    }
     default:
       return state;
   }
@@ -48,6 +55,9 @@ export const setUserProfile = (profile: ProfileType) =>
 
 export const setUserStatus = (status: ProfilePage["status"]) =>
   ({ type: "SET-USER-STATUS", status } as const);
+
+export const savePhotoSuccess = (photos: Record<"large" | "small", string>) =>
+  ({ type: "SAVE-PHOTO-SUCCESS", photos } as const);
 
 export const getUserProfile = (userId: string) => async (
   dispatch: Dispatch
@@ -70,8 +80,15 @@ export const getUserStatus = (userId: string) => async (dispatch: Dispatch) => {
 export const updateUserStatus = (status: string) => async (
   dispatch: Dispatch
 ) => {
-  const responce = await profileAPI.updateUserStatus(status);
-  if (responce.resultCode === 0) {
+  const response = await profileAPI.updateUserStatus(status);
+  if (response.resultCode === 0) {
     dispatch(setUserStatus(status));
+  }
+};
+
+export const savePhoto = (file: File) => async (dispatch: Dispatch) => {
+  const response = await profileAPI.savePhoto(file);
+  if (response.resultCode === 0) {
+    dispatch(savePhotoSuccess(response.data.photos));
   }
 };
