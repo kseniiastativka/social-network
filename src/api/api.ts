@@ -52,6 +52,25 @@ export const profileAPI = {
       })
       .then((response) => response.data);
   },
+  saveProfile(profile: {
+    fullName: string;
+    aboutMe: string;
+    lookingForAJob: boolean;
+    lookingForAJobDescription: string;
+    photos: { small: string; large: string };
+    contacts: {
+      facebook: string;
+      github: string;
+      instagram: string;
+      mainLink: string;
+      twitter: string;
+      vk: string;
+      website: string;
+      youtube: string;
+    };
+  }) {
+    return instance.put(`profile/`, profile).then((response) => response.data);
+  },
 };
 
 export const authAPI = {

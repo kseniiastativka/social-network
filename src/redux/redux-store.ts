@@ -46,7 +46,9 @@ export type Action =
     }
   | { type: "SET-USER-STATUS"; status: ProfilePage["status"] }
   | { type: "INITIALIZED_SUCCESS" }
-  | { type: "SAVE-PHOTO-SUCCESS"; photos: ProfileType["photos"] };
+  | { type: "SAVE-PHOTO-SUCCESS"; photos: ProfileType["photos"] }
+  | { type: "SAVE-PROFILE"; profile: ProfileType }
+  | { type: "SET-PROFILE-ERROR"; message: string };
 
 export interface App {
   initialized: boolean;
@@ -61,6 +63,7 @@ export interface Post {
 export interface ProfilePage {
   posts: Post[];
   profile: ProfileType | undefined;
+  profileEditError: string | undefined;
   status: string;
 }
 
@@ -124,7 +127,18 @@ export interface ProfileType {
   fullName: string;
   aboutMe: string;
   lookingForAJob: boolean;
+  lookingForAJobDescription: string;
   photos: { small: string; large: string };
+  contacts: {
+    facebook: string;
+    github: string;
+    instagram: string;
+    mainLink: string;
+    twitter: string;
+    vk: string;
+    website: string;
+    youtube: string;
+  };
 }
 
 export interface State {

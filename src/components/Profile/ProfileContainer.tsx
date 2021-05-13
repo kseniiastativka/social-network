@@ -6,6 +6,7 @@ import {
   getUserProfile,
   getUserStatus,
   savePhoto,
+  saveProfile,
   updateUserStatus,
 } from "../../redux/profile-reducer";
 import { withRouter } from "react-router-dom";
@@ -22,6 +23,7 @@ interface ProfileComponentProps
   authorizedUserID: number | undefined;
   isAuth: boolean;
   savePhoto: (file: File) => void;
+  saveProfile: (profile: ProfileType) => Promise<unknown>;
 }
 
 class ProfileContainer extends React.Component<ProfileComponentProps> {
@@ -64,6 +66,7 @@ class ProfileContainer extends React.Component<ProfileComponentProps> {
           status={this.props.status}
           updateUserStatus={this.props.updateUserStatus}
           savePhoto={this.props.savePhoto}
+          saveProfile={this.props.saveProfile}
         />
       </>
     );
@@ -87,6 +90,7 @@ export default compose<
     authorizedUserID: number | undefined;
     isAuth: boolean;
     savePhoto: (file: File) => void;
+    saveProfile: (profile: ProfileType) => Promise<unknown>;
   }>,
   ComponentType<ProfileComponentProps>,
   ComponentType<{}>
@@ -96,6 +100,7 @@ export default compose<
     getUserStatus,
     updateUserStatus,
     savePhoto,
+    saveProfile,
   }),
   withRouter
 )(ProfileContainer);

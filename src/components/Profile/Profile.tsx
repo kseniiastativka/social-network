@@ -9,6 +9,7 @@ const Profile: FC<{
   updateUserStatus: (status: string) => void;
   isOwner: boolean;
   savePhoto: (file: File) => void;
+  saveProfile: (profile: ProfileType) => Promise<unknown>;
 }> = (props) => {
   return (
     <>
@@ -18,6 +19,7 @@ const Profile: FC<{
         updateUserStatus={props.updateUserStatus}
         isOwner={props.isOwner}
         savePhoto={props.savePhoto}
+        saveProfile={props.saveProfile}
       />
       <MyPostsContainer />
     </>

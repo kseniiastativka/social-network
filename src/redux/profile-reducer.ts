@@ -7,7 +7,7 @@ import {
 } from "./redux-store";
 import { profileAPI } from "../api/api";
 
-const initialState = {
+const initialState: State["profilePage"] = {
   posts: [
     { id: 1, message: "Miss me?", likesCount: 12 },
     { id: 2, message: "I have a vacation soon!", likesCount: 34 },
@@ -15,6 +15,7 @@ const initialState = {
   ],
   profile: undefined,
   status: "",
+  profileEditError: undefined,
 };
 
 export const profileReducer = (
@@ -43,6 +44,15 @@ export const profileReducer = (
 
       return { ...state, profile: { ...state.profile, photos: action.photos } };
     }
+
+    case "SAVE-PROFILE": {
+      return { ...state, profile: action.profile };
+    }
+    case "SET-PROFILE-ERROR":
+      return {
+        ...state,
+        profileEditError: action.message,
+      };
     default:
       return state;
   }
@@ -58,6 +68,9 @@ export const setUserStatus = (status: ProfilePage["status"]) =>
 
 export const savePhotoSuccess = (photos: Record<"large" | "small", string>) =>
   ({ type: "SAVE-PHOTO-SUCCESS", photos } as const);
+
+export const saveProfileSuccess = (profile: ProfileType) =>
+  ({ type: "SAVE-PROFILE", profile } as const);
 
 export const getUserProfile = (userId: string) => async (
   dispatch: Dispatch
@@ -90,5 +103,20 @@ export const savePhoto = (file: File) => async (dispatch: Dispatch) => {
   const response = await profileAPI.savePhoto(file);
   if (response.resultCode === 0) {
     dispatch(savePhotoSuccess(response.data.photos));
+  }
+};
+
+export const saveProfile = (profile: ProfileType) => async (
+  dispatch: Dispatch
+) => {
+  const response = await profileAPI.saveProfile(profile);
+  if (response.resultCode === 0) {
+    dispatch(saveProfileSuccess(profile));
+  } else {
+    dispatch({
+      type: "SET-PROFILE-ERROR",
+      message: response.messages[0] ?? "Could not set profile data",
+    });
+    return Promise.reject(response.messages[0]);
   }
 };

@@ -7,6 +7,7 @@ let initialState = {
   ],
   profile: undefined,
   status: "",
+  profileEditError: "",
 };
 
 it("new post should be added ", () => {
