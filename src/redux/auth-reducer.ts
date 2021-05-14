@@ -1,5 +1,5 @@
 import { Action, Dispatch, State, UserAuthData } from "./redux-store";
-import { authAPI } from "../api/api";
+import { authAPI, security } from "../api/api";
 
 let initialState = {
   id: undefined,
@@ -7,6 +7,7 @@ let initialState = {
   login: undefined,
   isAuth: false,
   loginErrorMessage: undefined,
+  captchaUrl: undefined,
 };
 
 export const authReducer = (
@@ -24,6 +25,11 @@ export const authReducer = (
         ...state,
         loginErrorMessage: action.message,
       };
+    case "GET-CAPTCHA-URL-SUCCESS":
+      return {
+        ...state,
+        captchaUrl: action.payload,
+      };
     default:
       return state;
   }
@@ -33,6 +39,12 @@ export const setAuthUserData = (user: UserAuthData) =>
   ({
     type: "SET_USER_DATA",
     data: user,
+  } as const);
+
+export const getCaptchaUrlSuccess = (url: string) =>
+  ({
+    type: "GET-CAPTCHA-URL-SUCCESS",
+    payload: url,
   } as const);
 
 export const getUserAuthorisation = () => async (dispatch: Dispatch) => {
@@ -46,17 +58,28 @@ export const login = (userData: {
   email: string;
   password: string;
   rememberMe: boolean;
+  captchaUrl: string | undefined;
 }) => async (dispatch: Dispatch) => {
   let response = await authAPI.login(userData);
   if (response.resultCode === 0) {
     // @ts-expect-error
     dispatch(getUserAuthorisation());
   } else {
+    if (response.resultCode === 10) {
+      // @ts-expect-error
+      dispatch(getCaptchaUrl());
+    }
     dispatch({
       type: "SET-LOGIN-ERROR",
       message: response.messages[0] ?? "Could not log in",
     });
   }
+};
+
+export const getCaptchaUrl = () => async (dispatch: Dispatch) => {
+  const response = await security.getCaptcha();
+  const captchaUrl = response.url;
+  dispatch(getCaptchaUrlSuccess(captchaUrl));
 };
 
 export const logout = () => async (dispatch: Dispatch) => {
@@ -69,6 +92,7 @@ export const logout = () => async (dispatch: Dispatch) => {
         email: undefined,
         isAuth: false,
         loginErrorMessage: undefined,
+        captchaUrl: undefined,
       })
     );
   }

@@ -12,6 +12,7 @@ interface Values {
   email: string;
   password: string;
   rememberMe: boolean;
+  captchaUrl: string | undefined;
 }
 
 const InputAreaSchema = Yup.object().shape({
@@ -29,14 +30,21 @@ const InputAreaSchema = Yup.object().shape({
 const LoginForm = ({
   loginError,
   onsubmit,
+  captchaUrl,
 }: {
   onsubmit: (values: Values) => void;
   loginError?: string;
+  captchaUrl: string | undefined;
 }) => {
   return (
     <>
       <Formik<Values>
-        initialValues={{ email: "", password: "", rememberMe: false }}
+        initialValues={{
+          email: "",
+          password: "",
+          rememberMe: false,
+          captchaUrl: undefined,
+        }}
         validationSchema={InputAreaSchema}
         onSubmit={(values, { setSubmitting }) => {
           onsubmit(values);
@@ -69,6 +77,15 @@ const LoginForm = ({
               <button type="submit" disabled={form.isSubmitting}>
                 Log in
               </button>
+              {captchaUrl !== undefined && <img src={captchaUrl} />}
+              {captchaUrl && (
+                <Field
+                  type="captcha"
+                  name="captcha"
+                  placeholder={"captcha"}
+                  component={Input}
+                />
+              )}
             </Form>
           );
         }}
@@ -81,6 +98,7 @@ const LoginWrapper = (props: {
   login: (values: Values) => void;
   isAuth: boolean;
   loginErrorMessage: string | undefined;
+  captchaUrl: string | undefined;
 }) => {
   if (props.isAuth) {
     return <Redirect to={"/profile"} />;
@@ -88,7 +106,11 @@ const LoginWrapper = (props: {
   return (
     <div>
       <h1>LOGIN</h1>
-      <LoginForm onsubmit={props.login} loginError={props.loginErrorMessage} />
+      <LoginForm
+        onsubmit={props.login}
+        loginError={props.loginErrorMessage}
+        captchaUrl={props.captchaUrl}
+      />
     </div>
   );
 };
@@ -96,6 +118,7 @@ const LoginWrapper = (props: {
 const mapStateToProps = (state: State) => ({
   isAuth: state.userAuth.isAuth,
   loginErrorMessage: state.userAuth.loginErrorMessage,
+  captchaUrl: state.userAuth.captchaUrl,
 });
 
 export const Login = connect(mapStateToProps, { login })(LoginWrapper);

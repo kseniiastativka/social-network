@@ -39,6 +39,7 @@ export type Action =
   | { type: "SET-USER-PROFILE"; profile: ProfileType }
   | { type: "SET_USER_DATA"; data: UserAuthData }
   | { type: "SET-LOGIN-ERROR"; message: string }
+  | { type: "GET-CAPTCHA-URL-SUCCESS"; payload: string }
   | {
       type: "TOGGLE_IS_FOLLOWING";
       isFollowingInProgress: boolean;
@@ -121,6 +122,7 @@ export interface UserAuthData {
   login: string | undefined;
   isAuth: boolean;
   loginErrorMessage: string | undefined;
+  captchaUrl: string | undefined;
 }
 
 export interface ProfileType {
